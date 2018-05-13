@@ -144,7 +144,7 @@ myApp.controller('MainCtrl', function ($scope, $http, $location, $rootScope, $wi
 			sessionStorage.loggedIn = false;
 			formData = $scope.login;
 			
-			$http.post('../web/login/', JSON.stringify(formData)).then(function(response) {
+			$http.post('./web/login/', JSON.stringify(formData)).then(function(response) {
 				if(response.status === 200){
 					// console.log(response.data);
 					if (response.data[0]) {
@@ -200,7 +200,7 @@ myApp.controller('RegCtrl', function($scope, $http, fileUpload){
 		var newUsers = $scope.login;
 		console.log( JSON.stringify(newUsers) );
 		
-		$http.post("../web/addUser/",JSON.stringify(newUsers)).then(function(reply) {			
+		$http.post("./web/addUser/",JSON.stringify(newUsers)).then(function(reply) {			
 			if(reply.status === 200){
 				console.info("reply: "+JSON.stringify(reply));				
 				if(!reply.data.error){
@@ -223,7 +223,7 @@ myApp.controller('SettingCtrl', function ($scope, $http, $location) {
 	
 	$scope.statusOrder = [];
 	$scope.getstatusOrder = function(){
-		$http.get("../web/listStatusOrder/").then(function(reply) {
+		$http.get("./web/listStatusOrder/").then(function(reply) {
 			console.info("listStatusOrder: "+JSON.stringify(reply));
 			$scope.statusOrder = reply.data;
 		});
@@ -239,7 +239,7 @@ myApp.controller('SettingCtrl', function ($scope, $http, $location) {
 			orderstatus: $scope.addstatusOrder
 		};
 		
-		$http.post("../web/addStatusOrder/", dataSend).then(function(reply) {
+		$http.post("./web/addStatusOrder/", dataSend).then(function(reply) {
 			console.info(reply);
 			if(reply.status === 200){
 				$.growl.notice({ message: reply.data.msg });
@@ -255,7 +255,7 @@ myApp.controller('SettingCtrl', function ($scope, $http, $location) {
 	
 	$scope.userRole = [];
 	$scope.getuserRole = function(){
-		$http.get("../web/userRole/").then(function(reply) {
+		$http.get("./web/userRole/").then(function(reply) {
 			console.info("userRole: "+JSON.stringify(reply));
 			$scope.userRole = reply.data;
 		});
@@ -271,7 +271,7 @@ myApp.controller('SettingCtrl', function ($scope, $http, $location) {
 			leveluser: $scope.addlevelUser
 		};
 		
-		$http.post("../web/adduserRole/", dataSend).then(function(reply) {
+		$http.post("./web/adduserRole/", dataSend).then(function(reply) {
 			console.info(reply);
 			if(reply.status === 200){
 				$.growl.notice({ message: reply.data.msg });
@@ -301,7 +301,7 @@ myApp.controller('HistoryCtrl', function ($scope, $http, $location, $routeParams
 	console.log( "routeParams: " + $scope.params );
 	
 	$scope.listHistorys = [];
-	$http.post("../web/listHistory/", {
+	$http.post("./web/listHistory/", {
 		user_id: sessionStorage.getItem('userid'),
 		orderid: $scope.params
 	}).then(function(response) {
@@ -313,7 +313,7 @@ myApp.controller('HistoryCtrl', function ($scope, $http, $location, $routeParams
 myApp.controller('CustCtrl', function ($scope, $http, $location) {
 	
 	$scope.listCustomers = [];
-	$http.get("../web/listCustomers/").then(function(response) {
+	$http.get("./web/listCustomers/").then(function(response) {
 		$scope.listCustomers = response.data;
 	});
 	
@@ -355,7 +355,7 @@ myApp.controller('OrderCtrl', function ($scope, $http, $location, $routeParams) 
 
 	$scope.listOrders = [];
 	function getStatusOrder(){
-		return $http.get("../web/listStatusOrder/").then(function(reply) {
+		return $http.get("./web/listStatusOrder/").then(function(reply) {
 			// console.info("listStatusOrder: "+JSON.stringify(reply));
 			return reply.data;
 		});
@@ -377,7 +377,7 @@ myApp.controller('OrderCtrl', function ($scope, $http, $location, $routeParams) 
 			return statusOrderSelected;
 		}
 
-		$http.post("../web/listOrder/", {
+		$http.post("./web/listOrder/", {
 			user_id: sessionStorage.getItem('userid'),
 			status: $scope.getStatusOrder($scope.statusName)
 		}).then(function(response) {
@@ -431,7 +431,7 @@ myApp.controller('OrderCtrl', function ($scope, $http, $location, $routeParams) 
 			orderstatus_id: newso.id
 		};
 		
-		$http.post("../web/updtOrderStatus/", dataSend).then(function(reply) {
+		$http.post("./web/updtOrderStatus/", dataSend).then(function(reply) {
 			console.info(reply);
 			if(reply.status === 200){
 				$.growl.notice({ message: reply.data.msg });
@@ -461,14 +461,14 @@ myApp.controller('EditUserCtrl', function ($scope, $http, $location, $routeParam
 	
 	$scope.user = [];	
 	$scope.userRole = [];
-	/* $http.get("../web/userRole/").then(function(reply) {
+	/* $http.get("./web/userRole/").then(function(reply) {
 		console.info("userRole: "+JSON.stringify(reply));
 		$scope.userRole = reply.data;
 	}); */
 	
 	$scope.listUsers = [];
 	function getListUsers(){
-		return $http.get("../web/listUsers/" + $scope.id).then(function(response) {
+		return $http.get("./web/listUsers/" + $scope.id).then(function(response) {
 			return response.data;
 		});
 	}
@@ -485,7 +485,7 @@ myApp.controller('EditUserCtrl', function ($scope, $http, $location, $routeParam
 	$scope.updateUser = function(user){
 		console.info('Update User : ' + JSON.stringify(user));
 		
-		$http.post("../web/updateUsr/", {
+		$http.post("./web/updateUsr/", {
 			user_id: sessionStorage.getItem('userid'),
 			user_level: sessionStorage.getItem('level'),
 			user_editid: $scope.id,
@@ -528,7 +528,7 @@ myApp.controller('UserCtrl', function ($scope, $http, $location, $routeParams) {
 	$scope.deleteUser = function(userid){
 		console.info('Delete User : ' + userid);
 		
-		$http.post("../web/deleteUsr/", {
+		$http.post("./web/deleteUsr/", {
 			user_id: sessionStorage.getItem('userid'),
 			user_level: sessionStorage.getItem('level'),
 			delete_id: userid
@@ -549,7 +549,7 @@ myApp.controller('UserCtrl', function ($scope, $http, $location, $routeParams) {
 	}
 	
 	$scope.loadUsers = function(){
-		$http.get("../web/listUsers/").then(function(response) {
+		$http.get("./web/listUsers/").then(function(response) {
 			$scope.listUsers = response.data;
 		});
 	}
@@ -576,7 +576,7 @@ myApp.controller('KasirCtrl', function ($scope, $http, $location) {
 		
 	$scope.listOrders = [];	
 	/* $scope.loadOrder = function(){
-		$http.post("../web/listOrder/", {
+		$http.post("./web/listOrder/", {
 			user_id: sessionStorage.getItem('userid'),
 			user_level: sessionStorage.getItem('level'),
 			// params: $scope.params
@@ -603,7 +603,7 @@ myApp.controller('KasirCtrl', function ($scope, $http, $location) {
 	]; */
 	
 	function getStatusOrder(){
-		return $http.get("../web/listStatusOrder/").then(function(reply) {
+		return $http.get("./web/listStatusOrder/").then(function(reply) {
 			// console.info("listStatusOrder: "+JSON.stringify(reply));
 			return reply.data;
 		});
@@ -625,7 +625,7 @@ myApp.controller('KasirCtrl', function ($scope, $http, $location) {
 			return statusOrderSelected;
 		}
 
-		$http.post("../web/listOrder/", {
+		$http.post("./web/listOrder/", {
 			user_id: sessionStorage.getItem('userid'),
 			status: $scope.getStatusOrder($scope.statusName)
 		}).then(function(response) {
@@ -649,7 +649,7 @@ myApp.controller('KasirCtrl', function ($scope, $http, $location) {
 			nomorso: so.nomorso
 		};
 		
-		$http.post("../web/updtOrder/", dataSend).then(function(reply) {
+		$http.post("./web/updtOrder/", dataSend).then(function(reply) {
 			console.info(reply);
 			if(reply.status === 200){
 				$.growl.notice({ message: reply.data.msg });
@@ -674,7 +674,7 @@ myApp.controller('KasirCtrl', function ($scope, $http, $location) {
 			orderstatus: newso.name
 		};
 		
-		$http.post("../web/updtOrderStatus/", dataSend).then(function(reply) {
+		$http.post("./web/updtOrderStatus/", dataSend).then(function(reply) {
 			console.info(reply);
 			if(reply.status === 200){
 				$.growl.notice({ message: reply.data.msg });
@@ -710,7 +710,7 @@ myApp.controller('DashCtrl', function ($scope, $http, $location) {
 		
 		$scope.statusOrder = function(){
 			// listStatusOrder
-			$http.get("../web/listStatusOrder/").then(function(reply) {
+			$http.get("./web/listStatusOrder/").then(function(reply) {
 				console.info("listStatusOrder: "+JSON.stringify(reply));
 				return reply.data;
 			});
@@ -745,7 +745,7 @@ myApp.controller('DashCtrl', function ($scope, $http, $location) {
 		$scope.newOrder = function(addItem){
 			console.info("posting: "+JSON.stringify(addItem));
 			
-			$http.post("../web/addOrder/",JSON.stringify(addItem)).then(function(reply) {
+			$http.post("./web/addOrder/",JSON.stringify(addItem)).then(function(reply) {
 				console.info("reply: "+JSON.stringify(reply));
 				
 				if(reply.status === 200){
@@ -766,7 +766,7 @@ myApp.controller('DashCtrl', function ($scope, $http, $location) {
 		$scope.deleteOrder = function(orderid){
 			console.info("Delete Order: " + orderid);
 		
-			$http.post("../web/deleteOrder/", {
+			$http.post("./web/deleteOrder/", {
 				user_id: sessionStorage.getItem('userid'),
 				user_level: sessionStorage.getItem('level'),
 				orderid: orderid
@@ -788,7 +788,7 @@ myApp.controller('DashCtrl', function ($scope, $http, $location) {
 		
 		$scope.listOrder = [];
 		$scope.loadOrder = function(){
-			$http.post("../web/listOrder/", {
+			$http.post("./web/listOrder/", {
 				user_id: sessionStorage.getItem('userid'),
 				user_level: sessionStorage.getItem('level'),
 				// params: $scope.params

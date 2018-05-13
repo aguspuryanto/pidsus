@@ -1,0 +1,43 @@
+body {
+  margin-top: 50px !important;
+}
+
+* {
+  border-radius: 0 !important;
+}
+
+.form-signin p { padding-top: 10px; }
+.page-header { margin: 0px; }
+
+.form-register { max-width: 540px !important; }
+.form-signin {
+  max-width: 330px;
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+
+/* Portrait phones and smaller */
+@media (max-width: 480px) {
+	body {
+		/* margin-top: 20px; */
+	}
+}

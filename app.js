@@ -1,15 +1,16 @@
 var myApp = angular.module('myApp', ['oc.lazyLoad', 'ngRoute']);
 
-myApp.config(function($routeProvider, $httpProvider, $ocLazyLoadProvider) {
+myApp.config(function($routeProvider, $httpProvider, $locationProvider, $ocLazyLoadProvider) {
 	
-	$ocLazyLoadProvider.config({
-        debug: false,
-        events: true
-    });
+	$ocLazyLoadProvider.config({ debug: false,events: true });
 	
     $routeProvider.when("/home", {
         templateUrl : "pages/login.html",
 		controller: 'MainCtrl'
+    })
+    .when("/register", {
+        templateUrl : "pages/register.html",
+		controller: 'RegCtrl'
     })
     .when("/dashboard", {
         templateUrl : "pages/dashboard.html",
@@ -17,14 +18,10 @@ myApp.config(function($routeProvider, $httpProvider, $ocLazyLoadProvider) {
 		resolve: {
 			loadMyFiles: function($ocLazyLoad) {
 				return $ocLazyLoad.load({
-					files: [ 'dist/css/sb-admin.css', 'dist/css/jquery.growl.css', 'dist/js/sb-admin.js' ]
+					files: [ 'dist/css/sb-admin.css', 'dist/css/jquery.growl.css' ]
 				});
 			}
 		}
-    })
-    .when("/register", {
-        templateUrl : "pages/register.html",
-		controller: 'RegCtrl'
     })
     .when("/laporan", {
         templateUrl : "pages/laporan.html",
@@ -32,7 +29,18 @@ myApp.config(function($routeProvider, $httpProvider, $ocLazyLoadProvider) {
 		resolve: {
 			loadMyFiles: function($ocLazyLoad) {
 				return $ocLazyLoad.load({
-					files: [ 'dist/css/sb-admin.css', 'dist/css/jquery.growl.css', 'dist/js/sb-admin.js' ]
+					files: [ 'dist/css/sb-admin.css', 'dist/css/jquery.growl.css' ]
+				});
+			}
+		}
+    })
+    .when("/addlaporan", {
+        templateUrl : "pages/addlaporan.html",
+		controller: 'addreportCtrl',
+		resolve: {
+			loadMyFiles: function($ocLazyLoad) {
+				return $ocLazyLoad.load({
+					files: [ 'dist/css/sb-admin.css', 'dist/css/jquery.growl.css' ]
 				});
 			}
 		}
@@ -43,7 +51,7 @@ myApp.config(function($routeProvider, $httpProvider, $ocLazyLoadProvider) {
 		resolve: {
 			loadMyFiles: function($ocLazyLoad) {
 				return $ocLazyLoad.load({
-					files: [ 'dist/css/sb-admin.css', 'dist/css/jquery.growl.css', 'dist/js/sb-admin.js' ]
+					files: [ 'dist/css/sb-admin.css', 'dist/css/jquery.growl.css' ]
 				});
 			}
 		}
@@ -52,12 +60,12 @@ myApp.config(function($routeProvider, $httpProvider, $ocLazyLoadProvider) {
         templateUrl: 'pages/logout.html',
 		controller: 'LogoutCtrl'
     })
-    .otherwise({
-		redirectTo: '/home'
-	});
+    .otherwise({ redirectTo: '/home' });
 	
-	// $httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
-    // $httpProvider.defaults.cache = false;
+	$httpProvider.defaults.headers.common['Cache-Control'] = 'no-cache';
+    $httpProvider.defaults.cache = false;
+	
+	// $locationProvider.html5Mode({enabled : false, requireBase : false});
 });
 
 myApp.directive('datepicker', function() {   
@@ -174,10 +182,9 @@ myApp.controller('MainCtrl', function ($scope, $http, $location, $rootScope, $wi
 		}
 		
 		$scope.$on('$viewContentLoaded', function(event){ 
-		  console.log( 'code that will be executed ... ' );
-		  // every time this view is loaded
-
-		 });
+			// console.log( 'code that will be executed ... ' );
+			// every time this view is loaded
+		});
 		
 });
 
@@ -214,6 +221,21 @@ myApp.controller('RegCtrl', function($scope, $http, fileUpload){
 		.catch(function activateError(error) {
 			$.growl.error({ message: "Gagal Akses API >" + JSON.stringify(error) });
 		});
+	}
+	
+});
+
+myApp.controller('addreportCtrl', function ($scope, $http, $location) {
+	// console.log(" addreportCtrl ...");
+	
+	var today  = new Date().toISOString().slice(0, 10);
+	$scope.curDate = today.toLocaleString();
+	
+	$scope.lapor = {
+		// lapdu: "LAPDU-xxx/" + (today.getMonth()+1) + "/" + today.getFullYear(),
+		lapdu: "LAPDU-xxx/" + today.slice(5, 7) + "/" + today.slice(0, 4),
+		curdate: $scope.curDate,
+		pelapor: sessionStorage.getItem('user')
 	}
 	
 });
@@ -850,10 +872,11 @@ myApp.run(['$rootScope', '$location', '$http', function ($rootScope, $location, 
 	// editableOptions.theme = 'bs3'; // bootstrap3 theme. Can be also 'bs2', 'default'
 	
 	$rootScope.$on('$locationChangeStart', function (event, next, current) {
-		// redirect to login page if not logged in
-		if ($location.path() !== '/home' || $location.path() !== '/register' && sessionStorage.loggedIn !='true') {
+		// redirect to login page if not logged in and trying to access a restricted page
+        var restrictedPage = $.inArray($location.path(), ['/login', '/register']) === -1;
+		if (restrictedPage && sessionStorage.loggedIn !='true') {
 			console.log(" redirect to /home");
-			// $location.path('/home');
+			$location.path('/home');
 		}
 	});
 	
@@ -861,6 +884,18 @@ myApp.run(['$rootScope', '$location', '$http', function ($rootScope, $location, 
         $rootScope.title = current.$$route.title;
     });
 }]);
+
+myApp.factory('Auth', function(){
+	/* var user;
+	return{
+		setUser : function(aUser){
+			user = aUser;
+		},
+		isLoggedIn : function(){
+			return(user)? user : false;
+		}
+	} */
+});
 	
 myApp.factory('logoutService', function ($location) {
     return function () {

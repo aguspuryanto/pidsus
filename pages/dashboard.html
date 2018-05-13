@@ -1,21 +1,7 @@
 <div id="wrapper" class="toggled">
 
         <!-- Navigation -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-			<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-			  <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			  </button>
-			  <a class="navbar-brand" href="">SB Admin</a>
-			</div>
-			
-			<!-- Collect the nav links, forms, and other content for toggling -->
-			<div class="collapse navbar-collapse navbar-ex1-collapse" data-ng-include data-src="'pages/top-menu.html'" ng-init="!userId"></div>
-        </nav>
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-include data-src="'pages/top-menu.html'" ng-init="!userId"></nav>
 
         <div id="page-wrapper" style="min-height: 158px;">
 

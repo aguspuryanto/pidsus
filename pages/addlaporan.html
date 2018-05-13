@@ -1,0 +1,76 @@
+<div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-include data-src="'pages/top-menu.html'" ng-init="!userId"></nav>
+
+        <div id="page-wrapper">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <strong class="lead">Form Laporan</strong>
+							<!-- <div class="pull-right">
+								<a href="#/addlaporan" class="btn btn-primary">Form Laporan</a>
+							</div> -->
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            
+							<form>
+							  <div class="row">
+								  <div class="form-group col-md-3">
+									<label>Nomor Laporan</label>
+									<input type="text" class="form-control" ng-model="lapor.lapdu" disabled>
+								  </div>
+								  <div class="form-group col-md-3">
+									<label>Tanggal Laporan</label>
+									<input type="text" class="form-control" ng-model="lapor.curdate" disabled>
+								  </div>
+								  <div class="form-group col-md-3">
+									<label>Nama Pelapor</label>
+									<input type="text" class="form-control" ng-model="lapor.pelapor"  disabled>
+								  </div>
+								  <div class="form-group col-md-3">
+									<label>Kategori Laporan</label>
+									<select class="form-control">
+										<option value="1">Tindak Pidana Korupsi</option>
+										<option value="2">Tindak Pidana Pencucian Uang</option>
+										<option value="3">Tindak Pidana Kehutanan</option>
+										<option value="4">Tindak Pidana Lingkungan Hidup</option>
+										<option value="5">Tindak Pidana Anak</option>
+										<option value="6">Tindak Pidana Narkotika</option>
+										<option value="7">Tindak Pidana Terorisme</option>
+									</select>
+								  </div>
+							  </div>
+							  
+							  <div class="form-group">
+								<label>Judul Laporan</label>
+								<input type="text" class="form-control">
+							  </div>
+							  
+							  <div class="form-group">
+								<label>Detail Laporan</label>
+								<textarea class="form-control" rows="6"></textarea>
+							  </div>
+							  
+							  <div class="form-group">
+								<label>Data Penunjang</label>
+								<input type="file" file-model="myFile" class="form-control">
+							  </div>
+							  <button type="submit" class="btn btn-primary">Submit Laporan</button>
+							</form>
+							
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->

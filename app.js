@@ -202,6 +202,37 @@ myApp.controller('RegCtrl', function($scope, $http, fileUpload){
 		})
 	};
 	
+	// start Picture Preview    
+    $scope.imageUpload = function (event) {
+        var files = event.target.files;
+
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var reader = new FileReader();
+            reader.onload = $scope.imageIsLoaded;
+            reader.readAsDataURL(file);
+        }
+    }
+
+    $scope.imageIsLoaded = function (e) {
+        $scope.$apply(function () {
+            $scope.img = e.target.result;            
+        });
+    }
+	
+	$scope.setFile = function(element) {
+	  $scope.currentFile = element.files[0];
+	   var reader = new FileReader();
+
+	  reader.onload = function(event) {
+		$scope.image_source = event.target.result
+		$scope.$apply()
+
+	  }
+	  // when the file is read it triggers the onload event above.
+	  reader.readAsDataURL(element.files[0]);
+	}
+	
 	$scope.submitForm = function(){
 		// $scope.uploadFile();	
 		var newUsers = $scope.login;

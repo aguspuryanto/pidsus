@@ -43,6 +43,13 @@
       });
       //]]>
     </script>
-	<script src="app.js"></script>
+	<script src="app.js"></script>	
+	<script>
+	  var loadFile = function(e) {
+		var thumb = document.getElementById('thumb');
+		thumb.src = URL.createObjectURL(e.target.files[0]);
+	  };
+	</script>
+	
 </body>
 </html>

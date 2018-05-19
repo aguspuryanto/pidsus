@@ -1,0 +1,45 @@
+<div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-include data-src="'pages/top-menu.html'" ng-init="!userId"></nav>
+
+        <div id="page-wrapper" ng-init="init()">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <strong class="lead">Kategori</strong>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <div class="col-md-6 col-xs-12">
+								<form ng-submit="saveKategori()" name="myForm">
+									<div class="input-group">
+										<input type="text" ng-model="newkategori" class="form-control">
+										<span class="input-group-btn">
+											<button type="submit" class="btn btn-primary">Add Status Order</button>
+										</span>
+									</div>
+								</form>
+								
+								<ul class="list-group">
+								  <li ng-repeat="sts in listKategori | orderBy : 'id'" class="list-group-item">{{$index+1}}. {{sts.kategori}}</li>
+								</ul>
+							</div>
+							
+							<div class="col-md-6 col-xs-12">
+								
+							</div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-12 -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->

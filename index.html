@@ -10,6 +10,7 @@
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://sdk.accountkit.com/en_US/sdk.js"></script>
 	<script src="dist/angular.js"></script>
 	<script src="dist/angular-route.js"></script>
 	<link rel="stylesheet" type="text/css" href="dist/css/jquery-ui.css">
@@ -44,7 +45,7 @@
       //]]>
     </script>
 	<script src="app.js"></script>	
-	<script>
+	<script type="text/javascript">
 	  var loadFile = function(e) {
 		var thumb = document.getElementById('thumb');
 		thumb.src = URL.createObjectURL(e.target.files[0]);

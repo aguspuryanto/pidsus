@@ -16,47 +16,51 @@
                         <!-- /.panel-heading -->
                         <div class="panel-body">
                             
-							<form>
+							<form name="laporForm" ng-submit="submitForm()" >
 							  <div class="row">
 								  <div class="form-group col-md-3">
 									<label>Nomor Laporan</label>
 									<input type="text" class="form-control" ng-model="lapor.lapdu" disabled>
 								  </div>
-								  <div class="form-group col-md-3">
+								  <div class="form-group col-md-3 hidden-xs">
 									<label>Tanggal Laporan</label>
 									<input type="text" class="form-control" ng-model="lapor.curdate" disabled>
 								  </div>
-								  <div class="form-group col-md-3">
+								  <div class="form-group col-md-3 hidden-xs">
 									<label>Nama Pelapor</label>
 									<input type="text" class="form-control" ng-model="lapor.pelapor"  disabled>
 								  </div>
 								  <div class="form-group col-md-3">
 									<label>Kategori Laporan</label>
-									<select class="form-control">
-										<option value="1">Tindak Pidana Korupsi</option>
+									<select ng-model="lapor.kate" class="form-control" ng-options="x.kategori for x in listKategori">
+										<option value="">Pilih Kategori</option>
+										<!-- <option value="1">Tindak Pidana Korupsi</option>
 										<option value="2">Tindak Pidana Pencucian Uang</option>
 										<option value="3">Tindak Pidana Kehutanan</option>
 										<option value="4">Tindak Pidana Lingkungan Hidup</option>
 										<option value="5">Tindak Pidana Anak</option>
 										<option value="6">Tindak Pidana Narkotika</option>
-										<option value="7">Tindak Pidana Terorisme</option>
+										<option value="7">Tindak Pidana Terorisme</option> -->
 									</select>
 								  </div>
 							  </div>
 							  
 							  <div class="form-group">
 								<label>Judul Laporan</label>
-								<input type="text" class="form-control">
+								<input type="text" ng-model="lapor.title" class="form-control">
 							  </div>
 							  
 							  <div class="form-group">
 								<label>Detail Laporan</label>
-								<textarea class="form-control" rows="6"></textarea>
+								<textarea class="form-control" rows="6" ng-model="lapor.message" ></textarea>
 							  </div>
 							  
 							  <div class="form-group">
 								<label>Data Penunjang</label>
-								<input type="file" file-model="myFile" class="form-control">
+								<input type="file" class="form-control" file-model="myFile" onchange="loadFile(event)" accept="image/*">
+								<center>
+									<img id="thumb" class="img-responsive" height="30">
+								</center>
 							  </div>
 							  <button type="submit" class="btn btn-primary">Submit Laporan</button>
 							</form>

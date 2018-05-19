@@ -11,6 +11,31 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- Dumping structure for table pidsusbangka.wp0e_pxlaporan
+CREATE TABLE IF NOT EXISTS `wp0e_pxlaporan` (
+  `idlap` int(11) NOT NULL AUTO_INCREMENT,
+  `user_pelapor` int(11) NOT NULL,
+  `no_laporan` varchar(50) NOT NULL,
+  `tgl_laporan` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `kat_laporan` varchar(50) NOT NULL,
+  `jdl_laporan` varchar(190) NOT NULL,
+  `isi_laporan` text NOT NULL,
+  `file_laporan` varchar(190) NOT NULL DEFAULT '0',
+  `status_laporan` varchar(50) NOT NULL,
+  PRIMARY KEY (`idlap`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+
+-- Dumping data for table pidsusbangka.wp0e_pxlaporan: ~5 rows (approximately)
+DELETE FROM `wp0e_pxlaporan`;
+/*!40000 ALTER TABLE `wp0e_pxlaporan` DISABLE KEYS */;
+INSERT INTO `wp0e_pxlaporan` (`idlap`, `user_pelapor`, `no_laporan`, `tgl_laporan`, `kat_laporan`, `jdl_laporan`, `isi_laporan`, `file_laporan`, `status_laporan`) VALUES
+	(2, 2, 'LAPDU-xxx/05/2018', '2018-05-18 00:00:00', '7', 'adaakdjak', 'adkkjakdjka', '3556409302650430754.jpg', 'pending'),
+	(3, 2, 'LAPDU-0003/05/2018', '2018-05-18 00:00:00', '1', 'akajdka', 'adjakdak\n\nadkadjka', 'bn-komunitas-368x70.jpg', 'pending'),
+	(4, 2, 'LAPDU-0004/05/2018', '2018-05-18 00:00:00', '4', 'aksajkdjka', 'akdjakdka', 'Banner-Halaman-Promo-Edisi-Kemerdekaan.png', 'pending'),
+	(5, 2, 'LAPDU-0005/05/2018', '2018-05-18 00:00:00', '2', 'ajdakd', 'aadkjakd\nadljadja\njadkajdad kajdkajdiad\nakjkad', 'ihram_asia_249f545a6a2e10b3654563bbe7e889af.jpg', 'pending'),
+	(6, 2, 'LAPDU-0006/05/2018', '2018-05-18 00:00:00', '6', 'asakjka', 'aljkajdka', 'why-join-fastravel.png', 'pending');
+/*!40000 ALTER TABLE `wp0e_pxlaporan` ENABLE KEYS */;
+
 -- Dumping structure for table pidsusbangka.wp0e_pxusers
 CREATE TABLE IF NOT EXISTS `wp0e_pxusers` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -29,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `wp0e_pxusers` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Dumping data for table pidsusbangka.wp0e_pxusers: ~1 rows (approximately)
+-- Dumping data for table pidsusbangka.wp0e_pxusers: ~2 rows (approximately)
 DELETE FROM `wp0e_pxusers`;
 /*!40000 ALTER TABLE `wp0e_pxusers` DISABLE KEYS */;
 INSERT INTO `wp0e_pxusers` (`id`, `display_name`, `email`, `password`, `phone_number`, `remember_token`, `created_at`, `updated_at`, `level`, `dob`, `gender`, `address`, `jobs`) VALUES

@@ -11,10 +11,12 @@ $app->post('/login[/]', function ($request, $response, $args) {
 	
 	$result = DB::table("wp0e_pxusers")
 		->where('email', '=', $inputEmail)
-		// ->where('password', '=', $inputPassword)
-		->orWhere('phone_number', 'LIKE', $inputEmail)
+		->orWhere('phone_number', '=', $inputEmail)
+		->where('password', '=', $inputPassword)
 		->get();
 		
+	// echo $this->toDebug($result);
+	
 	return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
         ->write($result);
@@ -24,12 +26,15 @@ $app->post('/addUser[/]', function ($request, $response, $args) {
 	
 	$paramData = $request->getParsedBody();
 	// return $response->withJson($paramData);
-	// {"displayName":"Agus Puryanto","dateBorn":"1988-05-18","maleFemale":"L","phoneNumber":82140724011,"address":"Wiyung, Surabaya City, East Java, Indonesia","jobs":"Swasta"}
+	
+	if(empty($paramData['inputPassword'])) {
+		$paramData['inputPassword'] = bin2hex(openssl_random_pseudo_bytes(8));
+	}
 	
 	$dataUser = array(
 		'display_name' => $paramData['displayName'],
-		'email' => '---', //$paramData['email'],
-		'password' => bin2hex(openssl_random_pseudo_bytes(8)), //$paramData['password'],
+		'email' => $paramData['inputEmail'],
+		'password' => $paramData['inputPassword'],
 		'phone_number' => $paramData['phoneNumber'],
 		'remember_token' => bin2hex(openssl_random_pseudo_bytes(8)), //generate a random token,
 		'level' => 0, //$paramData['level'],
@@ -70,53 +75,23 @@ $app->post('/addOrder[/]', function ($request, $response, $args) {
 	$paramData = $request->getParsedBody();
 	// echo json_encode($paramData);
 	
-	$dataCustomer = array(
-		'namacustomer' => $paramData['nama'],
-		'hp' => $paramData['mobile'],
-		'email' => $paramData['email'],
-		'alamat' => $paramData['alamat']
-	);
-	
-	$count = DB::table('wp0e_pxmycustomer')
-		->where('email', $paramData['email'])
-		->where('hp', $paramData['hp'])
+	$pxmyorder = DB::table('wp0e_pxlaporan')
+		->where('no_laporan', $paramData['lapdu'])
+		// ->where('orderitem', $paramData['item'])
 		->count();
-		
-	if($count == 0){
-		$insertCustomer = DB::table('wp0e_pxmycustomer')->insert($dataCustomer);
-	}
 	
-	/* $getnomorso = DB::table('wp0e_pxmyorder')
-		->select('nomorso')->where('nomorso', $paramData['noso'])
-		->get(); */
-	
-	$pxmyorder = DB::table('wp0e_pxmyorder')
-		->where('namapelanggan', $paramData['nama'])
-		->where('orderitem', $paramData['item'])
-		->count();
-	// echo $count;	
-	
-	if($pxmyorder == 0){
-		
-		$ddtime = date("H:i:s", strtotime($paramData['ddtime']));
-		$orderdeadline = $paramData['ddline'];
-		// $orderdate = $paramData['tglorder'] . " " . date("H:i:s");
-	
-		$number = DB::table('wp0e_pxmyorder')->count()+1;
-		$nomorso = str_pad($number, 9, "0", STR_PAD_LEFT);  //00002
-		
+	if($pxmyorder == 0){		
 		$dataOrder = array(
-			// 'nomorso' => $nomorso,
-			'namapelanggan' => $paramData['nama'],
-			'orderitem' => $paramData['item'],
-			'orderjml' => $paramData['jml'],
-			'orderketerangan' => $paramData['ket'],
-			'orderdeadline' => date("Y-m-d H:i:s", strtotime($orderdeadline)),
-			'orderdate' => date("Y-m-d H:i:s"),
-			'orderstatus' => 1,
-			'orderopr' => $paramData['opr']
+			'user_pelapor' => $paramData['user_id'],
+			'no_laporan' => $paramData['lapdu'],
+			'tgl_laporan' => date("Y-m-d H:i:s", strtotime($paramData['curdate'])),
+			'kat_laporan' => $paramData['kate'],
+			'jdl_laporan' => $paramData['title'],
+			'isi_laporan' => $paramData['message'],
+			'file_laporan' => $paramData['file_laporan'],
+			'status_laporan' => 'pending'
 		);	
-		$insertOrder = DB::table('wp0e_pxmyorder')->insert($dataOrder);
+		$insertOrder = DB::table('wp0e_pxlaporan')->insert($dataOrder);
 	}
 	
 	if(!$insertOrder){
@@ -125,8 +100,7 @@ $app->post('/addOrder[/]', function ($request, $response, $args) {
 	}else{
 		$result["error"] = false;
         $result["msg"] = "Data Tersimpan";
-	}
-	
+	}	
 	// return $response->withJson($result);
 	
 	// $result = DB::table("fasilitas")->get();
@@ -351,7 +325,7 @@ $app->get('/listUsers[/[{id}]]', function ($request, $response, $args) {
 		if($args['id']){
 			$result = DB::table("wp0e_pxusers")->where('id', '=', $args['id'])->get();
 		}else {
-			$result = DB::table("wp0e_pxusers")->orderBy('id', 'DESC')->get();
+			$result = DB::table("wp0e_pxusers")->where('id', '!=', 1)->orderBy('id', 'DESC')->get();
 		}
 		
 	} else{
@@ -364,37 +338,42 @@ $app->get('/listUsers[/[{id}]]', function ($request, $response, $args) {
         ->write($result);
 });
 
-/* $app->get('/listOrders[/]', function ($request, $response, $args) {
-	$result = DB::table("wp0e_pxmyorder")->orderBy('orderid', 'DESC')->get();
+$app->get('/getLapdu[/]', function ($request, $response, $args) {
 	
-	return $response->withStatus(200)
+	$tokenAuth = $request->getHeader('Authorization');
+	if($tokenAuth){
+		$result = DB::table("wp0e_pxlaporan")
+			->select("idlap")
+			->whereMonth("tgl_laporan", "=", date('m'))
+			->orderBy('idlap', 'DESC')->first();
+	} else{
+		$result["error"] = true;
+		$result["msg"] = "No Authorization";
+	}
+		
+	return $response->withJson($result);	
+	/* return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
-        ->write($result);
-}); */
+        ->write($result); */
+});
 
-$app->get('/listStatusOrder[/]', function ($request, $response, $args) {
-	$result = DB::table("wp0e_pxstatusorder")->orderBy('id', 'ASC')->get();
+$app->get('/listKategori[/]', function ($request, $response, $args) {
+	$result = DB::table("wp0e_kategori")->orderBy('id', 'DESC')->get();
 	
 	return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
         ->write($result);
 });
 
-$app->post('/addStatusOrder[/]', function ($request, $response, $args) {
+$app->post('/saveKategori[/]', function ($request, $response, $args) {
 	$paramData = $request->getParsedBody();
+	
 	// return $response->withJson($paramData); die();
 	$statusOrder = array(
-		'status' => $paramData['orderstatus']
+		'kategori' => $paramData['kategori']
 	);
 	
-	$insertLogger = DB::table('wp0e_pxlog')->insert(array(
-		'orderid' => 0, //Setting Page
-		'update' => date("Y-m-d H:i:s"),
-		'operator' => $paramData['user_id'],
-		'ket' => 'New StatusOrder : '.$paramData['orderstatus'],
-	));
-	
-	$insertStatusOrder = DB::table('wp0e_pxstatusorder')->insert($statusOrder);	
+	$insertStatusOrder = DB::table('wp0e_kategori')->insert($statusOrder);	
 	if($insertStatusOrder){
 		$result["error"] = false;
         $result["msg"] = "Data Tersimpan";
@@ -409,17 +388,18 @@ $app->post('/addStatusOrder[/]', function ($request, $response, $args) {
 });
 
 $app->get('/userRole[/]', function ($request, $response, $args) {
-	$result = DB::table("wp0e_pxusersrole")->orderBy('id', 'DESC')->get();
+	/* $result = DB::table("wp0e_pxusersrole")->orderBy('id', 'DESC')->get();
 	
 	return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
-        ->write($result);
+        ->write($result); */
 });
 
 $app->post('/adduserRole[/]', function ($request, $response, $args) {
 	$paramData = $request->getParsedBody();
 	// return $response->withJson($paramData); die();
-	$userRole = array(
+	
+	/* $userRole = array(
 		'id_role' => $paramData['levelid'],
 		'user_role' => $paramData['leveluser']
 	);
@@ -442,11 +422,22 @@ $app->post('/adduserRole[/]', function ($request, $response, $args) {
 	
 	return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
-        ->write(json_encode($result));
+        ->write(json_encode($result)); */
 });
 
-$app->get('/listCustomers[/]', function ($request, $response, $args) {
-	$result = DB::table("wp0e_pxmycustomer")->orderBy('idcust', 'DESC')->get();
+$app->get('/listLaporan[/[{id}]]', function ($request, $response, $args) {
+	
+	$tokenAuth = $request->getHeader('Authorization');
+	if($tokenAuth){
+		if($args['id']){
+			$result = DB::table("wp0e_pxlaporan")->where("user_pelapor", "=", $args['id'])->orderBy('idlap', 'DESC')->get();
+		}else{
+			$result = DB::table("wp0e_pxlaporan")->orderBy('idlap', 'DESC')->get();
+		}
+	} else{
+		$result["error"] = true;
+		$result["msg"] = "No Authorization";
+	}
 	
 	return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
@@ -455,7 +446,7 @@ $app->get('/listCustomers[/]', function ($request, $response, $args) {
 
 $app->post('/listHistory[/]', function ($request, $response, $args) {
 	
-	$paramData = $request->getParsedBody();
+	/* $paramData = $request->getParsedBody();
 	// return $response->withJson($paramData); die();
 	
 	$qry = "select a.*,b.nomorso,b.namapelanggan,c.name from wp0e_pxlog a
@@ -471,7 +462,7 @@ $app->post('/listHistory[/]', function ($request, $response, $args) {
 	
 	return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
-        ->write(json_encode($result));
+        ->write(json_encode($result)); */
 });
 
 function toDebug($builder){

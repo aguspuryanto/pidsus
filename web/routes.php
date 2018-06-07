@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Database\Capsule\Manager as DB;
 // use Illuminate\Database\Eloquent\Model;
 
@@ -89,6 +88,9 @@ $app->post('/addOrder[/]', function ($request, $response, $args) {
 			'jdl_laporan' => $paramData['title'],
 			'isi_laporan' => $paramData['message'],
 			'file_laporan' => $paramData['file_laporan'],
+			'file_laporan2' => $paramData['file_laporan2'],
+			'file_laporan3' => $paramData['file_laporan3'],
+			'file_laporan4' => $paramData['file_laporan4'],
 			'status_laporan' => 'pending'
 		);	
 		$insertOrder = DB::table('wp0e_pxlaporan')->insert($dataOrder);
@@ -333,9 +335,10 @@ $app->get('/listUsers[/[{id}]]', function ($request, $response, $args) {
 		$result["msg"] = "No Authorization";
 	}
 	
-	return $response->withStatus(200)
+	return $response->withJson($result);
+	/* return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
-        ->write($result);
+        ->write($result); */
 });
 
 $app->get('/getLapdu[/]', function ($request, $response, $args) {
@@ -365,6 +368,34 @@ $app->get('/listKategori[/]', function ($request, $response, $args) {
         ->write($result);
 });
 
+$app->post('/saveReply[/]', function ($request, $response, $args) {
+	$paramData = $request->getParsedBody();	
+	// return $response->withJson($paramData); die();
+	$dataRelpy = array(
+		'kategori' => $paramData['kategori']
+	);
+	
+	$updateLap = DB::table("wp0e_pxlaporan")
+		->where('idlap', $paramData['idlap'])
+		->update([
+			'status_laporan' => "diterima",
+			'isi_response' => $paramData['isi_response'],
+			'tgl_response' => date("Y-m-d H:i:s")
+		]);
+		
+	if($updateLap){
+		$result["error"] = false;
+        $result["msg"] = "Data Tersimpan";
+	}else{
+		$result["error"] = true;
+        $result["msg"] = "Gagal simpan data";
+	}
+	
+	return $response->withStatus(200)
+        ->withHeader('Content-Type', 'application/json')
+        ->write(json_encode($result));
+});
+
 $app->post('/saveKategori[/]', function ($request, $response, $args) {
 	$paramData = $request->getParsedBody();
 	
@@ -387,12 +418,37 @@ $app->post('/saveKategori[/]', function ($request, $response, $args) {
         ->write(json_encode($result));
 });
 
-$app->get('/userRole[/]', function ($request, $response, $args) {
-	/* $result = DB::table("wp0e_pxusersrole")->orderBy('id', 'DESC')->get();
+$app->post('/upldUU[/]', function ($request, $response, $args) {
+	$paramData = $request->getParsedBody();
+	
+	$upldUU = array(
+		'fileTitle' => $paramData['file_title'],
+		'fileName' => $paramData['file_name'],
+		'fileDesc' => $paramData['file_title'],
+		'fileTgl' => date("Y-m-d")
+	);
+	
+	$insertUpldUU = DB::table('wp0e_upload')->insert($upldUU);	
+	if($insertUpldUU){
+		$result["error"] = false;
+        $result["msg"] = "Data Tersimpan";
+	}else{
+		$result["error"] = true;
+        $result["msg"] = "Gagal simpan data";
+	}
 	
 	return $response->withStatus(200)
         ->withHeader('Content-Type', 'application/json')
-        ->write($result); */
+        ->write(json_encode($result));
+	
+});
+
+$app->get('/getUpldUU[/]', function ($request, $response, $args) {
+	$result = DB::table("wp0e_upload")->orderBy('id', 'DESC')->get();
+	
+	return $response->withStatus(200)
+        ->withHeader('Content-Type', 'application/json')
+        ->write($result);
 });
 
 $app->post('/adduserRole[/]', function ($request, $response, $args) {
@@ -425,23 +481,43 @@ $app->post('/adduserRole[/]', function ($request, $response, $args) {
         ->write(json_encode($result)); */
 });
 
-$app->get('/listLaporan[/[{id}]]', function ($request, $response, $args) {
+$app->get('/getLaporan[/[{id}]]', function ($request, $response, $args) {
 	
 	$tokenAuth = $request->getHeader('Authorization');
 	if($tokenAuth){
-		if($args['id']){
-			$result = DB::table("wp0e_pxlaporan")->where("user_pelapor", "=", $args['id'])->orderBy('idlap', 'DESC')->get();
-		}else{
-			$result = DB::table("wp0e_pxlaporan")->orderBy('idlap', 'DESC')->get();
+		if(!empty($args['id'])){
+			$result = DB::table("wp0e_pxlaporan")->where("idlap", "=", $args['id'])->orderBy('idlap', 'DESC')->get();
 		}
 	} else{
 		$result["error"] = true;
 		$result["msg"] = "No Authorization";
 	}
 	
-	return $response->withStatus(200)
-        ->withHeader('Content-Type', 'application/json')
-        ->write($result);
+	return $response->withJson($result);
+});
+
+$app->get('/listLaporan[/[{id}]]', function ($request, $response, $args) {
+	
+	$tokenAuth = $request->getHeader('Authorization');
+	if($tokenAuth){
+		if(!empty($args['id'])){
+			$result = DB::table("wp0e_pxlaporan")->where("user_pelapor", "=", $args['id'])->orderBy('idlap', 'DESC')->get();
+		}else{
+			// $result = DB::table("wp0e_pxlaporan")->orderBy('idlap', 'DESC')->get();
+			$qry = "select a.*, b.display_name from wp0e_pxlaporan a
+				left join wp0e_pxusers b on b.id = a.user_pelapor
+				order by idlap desc";
+			$result = DB::select(DB::raw($qry));
+		}
+	} else{
+		$result["error"] = true;
+		$result["msg"] = "No Authorization";
+	}
+	
+	return $response->withJson($result);
+	/* return $response->withStatus(200)
+		->withHeader('Content-Type', 'application/json')
+		->write(json_encode($result)); */
 });
 
 $app->post('/listHistory[/]', function ($request, $response, $args) {

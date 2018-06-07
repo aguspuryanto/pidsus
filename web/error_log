@@ -1,0 +1,15 @@
+[26-May-2018 16:21:44 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[26-May-2018 22:36:54 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[31-May-2018 16:29:22 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[31-May-2018 16:31:02 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[31-May-2018 16:31:45 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[31-May-2018 16:33:26 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[31-May-2018 16:38:34 UTC] PHP Warning:  fwrite() expects parameter 2 to be string, array given in /home/lapduknb/public_html/web/vendor/slim/slim/Slim/Http/Stream.php on line 406
+[31-May-2018 16:40:55 UTC] PHP Warning:  fwrite() expects parameter 2 to be string, array given in /home/lapduknb/public_html/web/vendor/slim/slim/Slim/Http/Stream.php on line 406
+[31-May-2018 16:46:55 UTC] PHP Warning:  fwrite() expects parameter 2 to be string, array given in /home/lapduknb/public_html/web/vendor/slim/slim/Slim/Http/Stream.php on line 406
+[31-May-2018 20:35:41 UTC] PHP Warning:  fwrite() expects parameter 2 to be string, array given in /home/lapduknb/public_html/web/vendor/slim/slim/Slim/Http/Stream.php on line 406
+[31-May-2018 21:40:13 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[31-May-2018 21:41:59 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[31-May-2018 21:44:00 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[31-May-2018 21:44:47 UTC] PHP Notice:  Undefined index: id in /home/lapduknb/public_html/web/routes.php on line 324
+[31-May-2018 21:44:56 UTC] PHP Warning:  fwrite() expects parameter 2 to be string, array given in /home/lapduknb/public_html/web/vendor/slim/slim/Slim/Http/Stream.php on line 406

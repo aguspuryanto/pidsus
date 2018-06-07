@@ -1,0 +1,48 @@
+<div id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-include data-src="'pages/top-menu.html'" ng-init="!userId"></nav>
+
+        <div id="page-wrapper" ng-init="init()">
+            <div class="row">				
+				<div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            <strong class="lead">Upload</strong>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <form ng-submit="uploadUU()" name="myForm">
+								<div class="form-group">
+									<label>Foto</label>
+									<input type="file" class="form-control" file-model="myFile" onchange="loadFile(event)" accept="application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+									<!-- <center>
+										<img id="thumb" class="img-responsive" height="30">
+									</center> -->
+								</div>
+								<div class="form-group">
+									<label>Nama File</label>
+									<input type="text" class="form-control" ng-model="upld.title" required>
+								</div>
+								<button type="submit" class="btn btn-primary">Simpan</button>
+							</form>
+							
+							<ul class="list-group">
+								<li ng-repeat="uu in listFileUU | orderBy : 'id'" class="list-group-item">
+								<strong>{{$index+1}}. {{uu.fileTitle}} </strong>
+								<p><i class="glyphicon glyphicon-download"></i> <a href="{{$rootScope.baseUrl}}upload/{{uu.fileName}}">{{uu.fileName}}</a></p>
+								</li>
+							</ul>
+						</div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+				
+				</div>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /#page-wrapper -->
+
+    </div>
+    <!-- /#wrapper -->

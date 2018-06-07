@@ -3,7 +3,7 @@
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation" data-ng-include data-src="'pages/top-menu.html'" ng-init="!userId"></nav>
 
-        <div id="page-wrapper">
+        <div id="page-wrapper" ng-init="init()">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="panel panel-default">
@@ -27,7 +27,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="lap in listLaporan | orderBy : 'idlap'">
+                                    <tr ng-repeat="lap in listLaporan">
                                         <td>{{lap.tgl_laporan}}</td>
                                         <td>{{lap.no_laporan}}</td>
                                         <td ng-hide="userLevel!=10">{{lap.user_pelapor}}</td>

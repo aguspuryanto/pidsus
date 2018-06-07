@@ -6,7 +6,7 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="panel panel-default">
+                    <div class="panel panel-success">
                         <div class="panel-heading clearfix">
                             <strong class="lead">Form Laporan</strong>
 							<!-- <div class="pull-right">
@@ -56,12 +56,62 @@
 							  </div>
 							  
 							  <div class="form-group">
-								<label>Data Penunjang</label>
-								<input type="file" class="form-control" file-model="myFile" onchange="loadFile(event)" accept="image/*">
-								<center>
-									<img id="thumb" class="img-responsive" height="30">
-								</center>
+								<div class="row">
+									<div class="col-md-3">
+										<label>Data Penunjang</label>
+										<div class="input-group">
+											<input type="file" class="form-control" file-model="myFile" accept="image/*">
+											<div class="input-group-addon" style="padding:0px;border:none;">
+												<button class="btn btn-primary" type="button" ng-click="upload('thumb')">Upload</button>
+											</div>
+										</div>
+										<p ng-bind-html="thumb"></p>											
+										<center>
+											<img id="thumb" class="img-responsive" height="30">
+										</center>
+									</div>
+									<div class="col-md-3">
+										<label>Data Penunjang 2</label>
+										<div class="input-group">
+											<input type="file" class="form-control" file-model="myFile" accept="image/*">
+											<div class="input-group-addon" style="padding:0px;border:none;">
+												<button class="btn btn-primary" type="button" ng-click="upload('thumb_2')">Upload</button>
+											</div>
+										</div>
+										<p ng-bind-html="thumb_2"></p>
+										<center>
+											<img id="thumb_2" class="img-responsive" height="30">
+										</center>
+									</div>
+									<div class="col-md-3">
+										<label>Data Penunjang 3</label>
+										<div class="input-group">
+											<input type="file" class="form-control" file-model="myFile" accept="image/*">
+											<div class="input-group-addon" style="padding:0px;border:none;">
+												<button class="btn btn-primary" type="button" ng-click="upload('thumb_3')">Upload</button>
+											</div>
+										</div>
+										<p ng-bind-html="thumb_3"></p>
+										<center>
+											<img id="thumb_3" class="img-responsive" height="30">
+										</center>
+									</div>
+									<div class="col-md-3">
+										<label>Data Penunjang 4</label>
+										<div class="input-group">
+											<input type="file" class="form-control" file-model="myFile" accept="image/*">
+											<div class="input-group-addon" style="padding:0px;border:none;">
+												<button class="btn btn-primary" type="button" ng-click="upload('thumb_4')">Upload</button>
+											</div>
+										</div>
+										<p ng-bind-html="thumb_4"></p>
+										<center>
+											<img id="thumb_4" class="img-responsive" height="30">
+										</center>
+									</div>
+								</div>
 							  </div>
+							  
 							  <button type="submit" class="btn btn-primary">Submit Laporan</button>
 							</form>
 							

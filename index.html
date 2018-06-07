@@ -5,12 +5,12 @@
 	<meta http-equiv='cache-control' content='no-cache'>
 	<meta http-equiv='expires' content='0'>
 	<meta http-equiv='pragma' content='no-cache'>
-	
+	<!-- <meta http-equiv="Content-Security-Policy" content="default-src *; script-src 'self' 'unsafe-inline' 'unsafe-eval' *; style-src  'self' 'unsafe-inline' *"> -->
+	<title>Kejari Bangka</title>
     <!-- Bootstrap Core CSS -->
     <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://sdk.accountkit.com/en_US/sdk.js"></script>
+	<script src="dist/jquery.min.js"></script>
 	<script src="dist/angular.js"></script>
 	<script src="dist/angular-route.js"></script>
 	<link rel="stylesheet" type="text/css" href="dist/css/jquery-ui.css">
@@ -21,35 +21,29 @@
 <body ng-app="myApp" class="cbp-spmenu-push">
 	
 	<ng-view></ng-view>
-		
-	<!-- <script src="vendor/jquery/jquery.min.js"></script> -->
+	
 	<script type="text/javascript" src="dist/jquery-ui.js"></script>	
 	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyAaPlLq4OM0nCZE-62B5bPY1uG8a_3WAxQ"></script>
-    <!-- <script src="vendor/metisMenu/metisMenu.min.js"></script> -->
 	<script src="dist/jquery.growl.js"></script>
-	<!-- <script src="dist/dirPagination.js"></script>
-	<script src="dist/moment.js"></script>
-	<script src="dist/angular-moment.min.js"></script> -->
 	<script src="dist/oclazyload/ocLazyLoad.min.js"></script>
-    <!-- <script src="dist/js/sb-admin-2.js"></script> -->
-	<script type="text/javascript">
-      //<![CDATA[
-      $(document).ready(function(){
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
-            $("#wrapper.toggled").find("#sidebar-wrapper").find(".collapse").collapse("hide");
-        });
-      });
-      //]]>
-    </script>
 	<script src="app.js"></script>	
 	<script type="text/javascript">
-	  var loadFile = function(e) {
-		var thumb = document.getElementById('thumb');
-		thumb.src = URL.createObjectURL(e.target.files[0]);
-	  };
+		$(document).ready(function(){
+			$("#menu-toggle").click(function(e) {
+				e.preventDefault();
+				$("#wrapper").toggleClass("toggled");
+				$("#wrapper.toggled").find("#sidebar-wrapper").find(".collapse").collapse("hide");
+			});
+		});
+		
+		var loadFile = function(e, id) {
+			var thumb = document.getElementById('thumb');
+			if(id){
+				thumb = document.getElementById(id);
+			}
+			thumb.src = URL.createObjectURL(e.target.files[0]);
+		};
 	</script>
 	
 </body>
